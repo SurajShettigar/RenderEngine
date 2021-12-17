@@ -78,4 +78,19 @@ namespace math
     using Point = Vector3;
     using Color = Vector3;
 }
+
+namespace std
+{
+    template <>
+    struct hash<math::Vector3>
+    {
+        size_t operator()(math::Vector3 const &vector3) const
+        {
+            return ((hash<double>()(vector3.x) ^
+                     (hash<double>()(vector3.y) << 1)) >>
+                    1) ^
+                   (hash<double>()(vector3.z) << 1);
+        }
+    };
+}
 #endif

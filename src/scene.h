@@ -33,7 +33,7 @@ private:
 
     Color getRayPixelColor(const raytracer::Ray &ray, const raytracer::Geometry &geo, int currBounce);
     void processImageColor(Color &color, int samples);
-    void renderPixels(int index, int start_x, int start_y, int end_x, int end_y, void (*callback)(uint8_t *));
+    void renderPixels(int index, int start_x, int start_y, int end_x, int end_y, void (*callback)(uint8_t *), float *progress);
 
 public:
     Scene()

@@ -1,4 +1,5 @@
 #include <chrono>
+#include <unordered_map>
 using std::chrono::duration;
 using std::chrono::steady_clock;
 
@@ -12,10 +13,12 @@ using std::chrono::steady_clock;
 #include "viewport/window.h"
 #include "scene.h"
 
-#define RENDER_SILENT 0
+#define RENDER_SILENT 1
 
-const char* RENDER_IMAGE = "../renders/render.png";
-const char* MODEL_FILE = "../assets/bunny.obj";
+const char* RENDER_IMAGE = "../renders/teddy_render_01.png";
+const char* MODEL_FILE = "../assets/teddy.obj";
+
+bool isRendering = false;
 
 raytracer::Mesh getMeshFromFile(const char* path)
 {
@@ -55,6 +58,7 @@ raytracer::Mesh getMeshFromFile(const char* path)
     {
         size_t indexOffset = 0;
         std::cout << "Face Count: " << shapes[s].mesh.num_face_vertices.size() << std::endl;
+
         for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++)
         {
             size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
@@ -124,18 +128,13 @@ void onPixelsProcessed(uint8_t* pixels)
     
 }
 
-int showViewport()
-{
-    VulkanRenderer renderer;
-    Window window(reinterpret_cast<Renderer *>(&renderer), 1280, 720, "Render Engine");
-    window.show();
-
-    return 0;
-}
-
 int renderImage()
 {
+    isRendering = true;
+
     using namespace raytracer;
+
+    Mesh mesh = getMeshFromFile(MODEL_FILE);
 
     Camera camera(45.0,                    // FOV
                   16.0 / 9.0,              // Aspect Ratio
@@ -150,13 +149,12 @@ int renderImage()
     image.targetImageLocation = RENDER_IMAGE;
 
     Scene scene(camera, image);
-    // scene.generateRandomScene();
-    scene.generateSceneFromModel(getMeshFromFile(MODEL_FILE));
+    scene.generateSceneFromModel(mesh);
     scene.setOnPixelsProcessedListener(onPixelsProcessed);
 
     auto start = steady_clock::now();
     
-    std::cout << "Started rendering the scene" << std::endl;
+    std::cout << "Started rendering the scene:" << std::endl;
 
     scene.render(ThreadUsage::MAX_MINUS_2);
 
@@ -172,6 +170,25 @@ int renderImage()
                    image.colorChannels,
                    &scene.pixels,
                    image.width * image.colorChannels);
+
+    isRendering = false;
+
+    return 0;
+}
+
+void onRenderClicked()
+{
+    std::cout << "Render called" << std::endl;
+    if (!isRendering)
+        renderImage();
+}
+
+int showViewport()
+{
+    VulkanRenderer renderer;
+    Window window(reinterpret_cast<Renderer *>(&renderer), 1280, 720, "Render Engine");
+    window.setRenderListener(onRenderClicked);
+    window.show();
 
     return 0;
 }

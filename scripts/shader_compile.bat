@@ -1,5 +1,5 @@
 @echo off
-set shader_dir=%~dp0..\src\engine\shaders
+set shader_dir=%~dp0..\src\viewport\shaders
 pushd  %shader_dir%
 
 %VULKAN_SDK%\Bin\glslc.exe shader.vert -o .\shader.vert.spv

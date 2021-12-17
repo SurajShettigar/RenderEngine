@@ -17,6 +17,10 @@ private:
         {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}};
     const vector<uint16_t> indices = {0, 1, 2, 2, 3, 0};
 
+    // vector<VertexData> vertices;
+    // vector<uint32_t> indices;
+
+
     GLFWwindow *window;
 
     VkInstance instance;
@@ -122,6 +126,7 @@ public:
     void destroy() override;
 
     void onWindowResized() override;
+    void onModelLoaded(const std::unordered_map<math::Point, uint32_t> &uniqueVertices) override;
     void onInput(InputType input, float value_x, float value_y) override;
 };
 

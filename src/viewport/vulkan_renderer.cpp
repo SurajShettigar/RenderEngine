@@ -1263,6 +1263,18 @@ void VulkanRenderer::onWindowResized()
     frameBufferResized = true;
 }
 
+void VulkanRenderer::onModelLoaded(const std::unordered_map<math::Point, uint32_t> &uniqueVertices) 
+{
+    // for(auto &v: uniqueVertices)
+    // {
+    //     VertexData vertex{};
+    //     vertex.position = glm::vec3(v.first.x, v.first.y, v.first.z);
+    //     vertex.color = glm::vec3(1.0f, 1.0f, 1.0f);
+    //     vertices.push_back(vertex);
+    //     indices.push_back(v.second);
+    // }
+}
+
 void VulkanRenderer::onInput(InputType input, float value_x, float value_y)
 {
     switch (input)

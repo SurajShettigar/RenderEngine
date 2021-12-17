@@ -1,8 +1,12 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <unordered_map>
+
+
 #include <glfw/glfw3.h>
 #include "renderer_exception.h"
+#include "../math/math.h"
 
 enum class InputType
 {
@@ -28,7 +32,7 @@ public:
     virtual void destroy() = 0;
 
     virtual void onWindowResized() = 0;
-
+    virtual void onModelLoaded(const std::unordered_map<math::Point, uint32_t> &uniqueVertices) = 0;
     virtual void onInput(InputType input, float value_x, float value_y) = 0;
 };
 

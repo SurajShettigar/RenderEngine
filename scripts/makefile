@@ -1,6 +1,6 @@
 CC:= g++
 # CPPFLAGS:= -std=c++17 -g -Wall -Wextra -pedantic
-CPPFLAGS:= -std=c++17 -pthread -g -Wall -Wextra -pedantic
+CPPFLAGS:= -std=c++17 -pthread -O3
 
 PROJECT := render_engine.exe
 SRC_DIR := ..\src

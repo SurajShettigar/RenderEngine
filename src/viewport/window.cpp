@@ -18,40 +18,43 @@ void Window::handleInput()
             double deltaX = xPos;
             double deltaY = yPos;
 
-            if(xPos < prevMouseXPos)
+            if (xPos < m_prevMouseXPos)
                 deltaX = -1.0;
-            else if(xPos > prevMouseXPos)
+            else if (xPos > m_prevMouseXPos)
                 deltaX = 1.0;
             else
                 deltaX = 0.0;
-                
-            if(yPos < prevMouseYPos)
+
+            if (yPos < m_prevMouseYPos)
                 deltaY = -1.0;
-            else if(yPos > prevMouseYPos)
+            else if (yPos > m_prevMouseYPos)
                 deltaY = 1.0;
             else
                 deltaY = 0.0;
 
             m_renderer->onInput(InputType::CAMERA_ROTATE, deltaX, deltaY);
         }
-        else if(glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS)
+        else if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS)
         {
             double xPos, yPos;
             glfwGetCursorPos(m_window, &xPos, &yPos);
-            double deltaX = xPos - prevMouseXPos;
-            double deltaY = xPos - prevMouseXPos;
+            double deltaX = xPos - m_prevMouseXPos;
+            double deltaY = xPos - m_prevMouseXPos;
             m_renderer->onInput(InputType::CAMERA_PAN, deltaX, deltaY);
         }
         else if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_3) == GLFW_PRESS)
         {
             double xPos, yPos;
             glfwGetCursorPos(m_window, &xPos, &yPos);
-            double deltaX = xPos - prevMouseXPos;
-            double deltaY = xPos - prevMouseXPos;
+            double deltaX = xPos - m_prevMouseXPos;
+            double deltaY = xPos - m_prevMouseXPos;
             m_renderer->onInput(InputType::CAMERA_ZOOM, deltaX, deltaY);
         }
     }
-    glfwGetCursorPos(m_window, &prevMouseXPos, &prevMouseXPos);
+    else if (glfwGetKey(m_window, GLFW_KEY_ENTER) == GLFW_PRESS)
+        m_render_callback();
+
+    glfwGetCursorPos(m_window, &m_prevMouseXPos, &m_prevMouseXPos);
 }
 
 void Window::start()

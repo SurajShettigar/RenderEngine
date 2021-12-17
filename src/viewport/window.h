@@ -17,8 +17,10 @@ private:
     int m_height;
     const char *m_name;
 
-    double prevMouseXPos;
-    double prevMouseYPos;
+    double m_prevMouseXPos;
+    double m_prevMouseYPos;
+
+    void (*m_render_callback)();
 
 protected:
     void handleInput();
@@ -33,7 +35,10 @@ public:
         : m_renderer{renderer}, m_width{width}, m_height{height}, m_name{name} {}
         
     int show();
-
+    void setRenderListener(void (*callback)())
+    {
+        m_render_callback = callback;
+    }
     void onWindowResized();
 };
 #endif

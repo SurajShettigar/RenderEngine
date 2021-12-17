@@ -72,7 +72,7 @@ Color Scene::getRayPixelColor(const raytracer::Ray &ray, const raytracer::Geomet
         return Color::zero;
 
     if (geo.isHit(ray, 0.0001, INFINITY, hit))
-    {   
+    {
         Color color = Color::zero;
         raytracer::Ray outRay;
 
@@ -102,10 +102,11 @@ void Scene::processImageColor(Color &color, int samples)
     color.z = math::clamp(color.z, 0.0, 0.999);
 }
 
-void Scene::renderPixels(int index, int start_x, int start_y, int end_x, int end_y, void (*callback)(uint8_t *))
+void Scene::renderPixels(int index, int start_x, int start_y, int end_x, int end_y, void (*callback)(uint8_t *), float *progress)
 {
     Color color(1.0, 1.0, 1.0);
 
+    int i = 0;
     for (int y = start_y; y < end_y; ++y)
     {
         for (int x = start_x; x < end_x; ++x)
@@ -121,9 +122,13 @@ void Scene::renderPixels(int index, int start_x, int start_y, int end_x, int end
             m_pixels[index++] = static_cast<uint8_t>(color.x * 256);
             m_pixels[index++] = static_cast<uint8_t>(color.y * 256);
             m_pixels[index++] = static_cast<uint8_t>(color.z * 256);
+
+            *progress = (i + 1) / (end_x * end_y);
+            i++;
         }
         callback(m_pixels);
     }
+
 }
 
 void Scene::setOnPixelsProcessedListener(void (*callback)(uint8_t *pixels))
@@ -155,15 +160,27 @@ void Scene::render(ThreadUsage threadUsage)
     int pixelsPerThread = width * height * static_cast<int>(m_image.colorChannels) / numThreads;
 
     std::thread threads[numThreads];
+    float progress[numThreads];
     int currPixel = 0;
     int currHeight = 0;
     for (size_t i = 0; i < numThreads; i++)
     {
-        threads[i] = std::thread(&Scene::renderPixels, this, currPixel, 0, currHeight, width, currHeight + height / numThreads, m_callback);
+        threads[i] = std::thread(&Scene::renderPixels, this, currPixel, 0, currHeight, width, currHeight + height / numThreads, m_callback, &progress[i]);
         currPixel += pixelsPerThread;
         currHeight += height / numThreads;
     }
 
+    // float prog;
+    // for (size_t i = 0; i < numThreads; i++)
+    //     prog += progress[i];
+    // prog /= numThreads;
+    // prog *= 100.0;
+
+    // std::cout << "Progress: " << prog << "%" << std::endl << std::flush;
+
     for (size_t i = 0; i < numThreads; i++)
+    {
         threads[i].join();
+    }
+
 }
