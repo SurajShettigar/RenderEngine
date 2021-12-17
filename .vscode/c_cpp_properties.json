@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/external/glfw/include",
+                "${workspaceFolder}/external/glm",
+                "${workspaceFolder}/external/stb",
+                "${workspaceFolder}/external/assimp/include",
+                "${workspaceFolder}/external/tinyobjloader/include",
+                "${env:VULKAN_SDK}/Include",
+                "${env:VULKAN_SDK}/Third-Party/Include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

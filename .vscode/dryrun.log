@@ -1,0 +1,4 @@
+make -f d:\Personal_Work\Computer_Graphics\Rendering\RenderEngine\RenderEngine\${workspaceFolder}\scripts --dry-run --keep-going --print-directory
+'make' is not recognized as an internal or external command,
+operable program or batch file.
+ 
